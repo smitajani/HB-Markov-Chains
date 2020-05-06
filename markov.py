@@ -1,6 +1,6 @@
 """Generate Markov text from text files."""
 
-from random import choice
+from random import choice, choices
 
 
 def open_and_read_file(file_path):
@@ -69,11 +69,34 @@ chains = make_chains("hi there mary hi there juanita")
 def make_text(chains):
     """Return text from chains."""
 
-    words = []
+    the_new_string_of_words = []
+    # Pick a random starting word from chains dictionary
+    # Get start_word's corresponding values from the dictionary   
+    words_for_my_key = choice(list(chains.keys()))
+    print(f"Start with - {words_for_my_key}")
 
+    i=0
+    for words_for_my_key in chains:
+
+        list_of_words_to_choose_from = chains.get(words_for_my_key)
+        
+        # Use choices to randomly pick the next word using occurance count len(list_of_words_to_choose_from),  
+        next_word = choices(list_of_words_to_choose_from, k = 1)
+        
+        the_new_string_of_words.extend(words_for_my_key)
+        the_new_string_of_words.extend(next_word)
+        words_for_my_key = the_new_string_of_words[-2:]
+
+        print(f"Values for the key - {list_of_words_to_choose_from}\n",
+        f"Picked my next word - {next_word}\n",
+        f"New string of words - {the_new_string_of_words}\n",    
+        f"New key - {i}   {words_for_my_key}\n\n")
+        if i > 3: 
+            break
+        i = i + 1
     # your code goes here
 
-    return " ".join(words)
+    return " ".join(the_new_string_of_words)
 
 
 input_path = "green-eggs.txt"
